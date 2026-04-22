@@ -1,0 +1,22 @@
+name: NLP Translation Pipeline
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  run-translation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t bn-en-translator .
+
+      - name: Run translation container
+        run: docker run --rm -v $PWD:/app bn-en-translator
+
+      - name: Show output file
+        run: cat output.txt
